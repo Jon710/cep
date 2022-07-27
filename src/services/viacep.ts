@@ -1,11 +1,17 @@
 import axios, { AxiosResponse } from "axios";
-import { validateLength, removeSpecialCharacters } from "../utils";
+import {
+  validateLength,
+  removeSpecialCharacters,
+  getArgsFromCLI,
+} from "../utils";
 
 const viacep = axios.create({
   baseURL: "https://viacep.com.br",
 });
 
-export default async function fetchCEP(cep: string): Promise<any> {
+export default async function fetchCEP(): Promise<any> {
+  const cep = getArgsFromCLI();
+
   const cepWithoutSpecialChars = removeSpecialCharacters(cep);
 
   const isValidCEP = validateLength(cepWithoutSpecialChars);
@@ -13,7 +19,6 @@ export default async function fetchCEP(cep: string): Promise<any> {
   if (isValidCEP) {
     try {
       const response = await viacep.get(`/ws/${cep}/json`);
-      console.log(response);
       return response;
     } catch (error) {
       console.log("Erro na requisição!", error);

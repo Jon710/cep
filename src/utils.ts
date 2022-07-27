@@ -12,4 +12,14 @@ function removeSpecialCharacters(rawCEP: string): string {
   return rawCEP.replace(/\D+/g, "");
 }
 
-export { validateLength, removeSpecialCharacters };
+function getArgsFromCLI() {
+  let args = process.argv;
+  args = args.slice(2);
+  if (args.length === 0) {
+    throw new Error("É obrigatório digitar o CEP!");
+  }
+
+  return args[0];
+}
+
+export { validateLength, removeSpecialCharacters, getArgsFromCLI };
